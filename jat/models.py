@@ -18,6 +18,7 @@ class Introduction(models.Model):
     repositiory = models.ForeignKey(Repository, on_delete=models.CASCADE)
     version = models.IntegerField(default=1)
     contents = models.TextField()
+    access = models.IntegerField(default=1) #0: private, 1: pubilc
 
 
     def __str__(self):
