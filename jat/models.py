@@ -1,5 +1,7 @@
 from django.db import models
 
+
+
 class Repository(models.Model):
     name = models.CharField(max_length=40)
     description = models.CharField(max_length=200)
@@ -10,6 +12,7 @@ class Repository(models.Model):
 
     class Meta:
         verbose_name_plural = 'Repositories'
+        ordering = ['deadline']
 
     def __str__(self):
         return self.name
@@ -20,6 +23,8 @@ class Introduction(models.Model):
     contents = models.TextField()
     access = models.IntegerField(default=1) #0: private, 1: pubilc
 
+    class Meta:
+        ordering = ['-version']
 
     def __str__(self):
         return f'{self.version} {self.contents}'
