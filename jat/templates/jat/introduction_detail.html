@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
-{% block title %} List Repository {% endblock %}
+{% block title %} detail introduction {% endblock %}
 
 {% block content %}
     {{ repository_list.count }} Repository
     <table border="1">
     <tbody>
-    {% for repository in repository_list %}
+    {% for comment in repository.introduction_set.all %}
     <tr>
         <td>수정</td>
-        <td><a href="{% url 'jat:repository_detail' pk=repository.pk %}">{{ repository.name }}</a></td>
+        <td><a href="{% url 'jat:repository_detail' pk=repository.name %}">{{ repository.name }}</a></td>
         <td>Date: {{ repository.deadline }}</td>
         <td>삭제</td>
     </tr>
