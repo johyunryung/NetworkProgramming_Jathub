@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %} Confirm Delete Repository {% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+    {% csrf_token %}
+    Do you want to delete Repository
+    {{ form.as_p }}
+        <button type="submit">Delete</button>
+    </form>
+{% endblock %}
