@@ -5,8 +5,8 @@
 {% block content %}
     <form action="" method="post">
     {% csrf_token %}
-    Do you want to delete Repository
-    {{ form.as_p }}
+    Do you want to delete Repository "{{ repository }}" ?
         <button type="submit">Delete</button>
+        <button type="button" onclick="history.back();">Cancel</button>
     </form>
 {% endblock %}
