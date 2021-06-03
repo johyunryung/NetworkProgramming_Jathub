@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.db.models import Max
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -30,4 +31,34 @@ class RepositoryDeleteView(generic.DeleteView):
 class IntroductionDetailView(generic.DetailView):
     model = Introduction
 
+class IntroductionCreateView(generic.CreateView):
+    model =  Introduction
+    fields = ['repository','version','contents','access']
+    template_name_suffix = '_create'
+    # success_url = reverse_lazy('jat:repository_detail') #repository_detail 오류 발생
+    def get_initial(self):
+        repository = get_object_or_404(Repository, pk=self.kwargs['repository_pk'])
+        introduction = repository.introduction_set.aggregate(Max('version'))
+        version = introduction['version__max']
+        if version == None: #introduction이 아예 없으면 version 기본값 : 1
+            version= 1
+        else: #introduction이 있으면 version 최대값 + 1
+            version += 1
+        return {'repository': repository, 'version' : version}
+
+    def get_success_url(self):
+        return reverse_lazy('jat:repository_detail',kwargs={'pk': self.kwargs['repository_pk']})
+
+class IntroductionUpdate(generic.UpdateView):
+    model = Introduction
+    fields = ['repository', 'version', 'contents', 'access']
+    template_name_suffix = '_update'
+    def get_success_url(self):
+        return reverse_lazy('jat:repository_detail',kwargs={'pk': self.kwargs['repository_pk']})
+
+
+class IntroductionDelete(generic.DeleteView):
+    model = Introduction
+    def get_success_url(self):
+        return reverse_lazy('jat:repository_detail',kwargs={'pk': self.kwargs['repository_pk']})
 
