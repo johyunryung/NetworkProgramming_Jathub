@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %} Detail Comment {% endblock %}
+
+{% block content %}
+    {{ Comment.contents }}
+    <table border="1">
+    <tbody>
+    {% for comment in comment.comment_set.all %}
+    <tr>
+        <td>{{ comment.comment }}</td>
+        <td>수정</td>
+        <td>삭제</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+{% endblock %}
