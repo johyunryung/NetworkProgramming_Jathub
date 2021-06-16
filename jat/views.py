@@ -1,8 +1,9 @@
 from django.db.models import Max
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
+from jat.forms import IntroductionForm
 from jat.models import Repository, Introduction, Comment
 
 
@@ -48,6 +49,30 @@ class IntroductionCreateView(generic.CreateView):
 
     def get_success_url(self):
         return reverse_lazy('jat:repository_detail',kwargs={'pk': self.kwargs['repository_pk']})
+
+def add_introduction(request,repository_pk):
+    if request.method == 'POST':
+        form = IntroductionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('jat:repository_detail', pk=repository_pk)
+    else:
+        repository = get_object_or_404(Repository, pk=repository_pk)
+        introduction = repository.introduction_set.order_by('-version').first()
+
+        if introduction == None:
+            version = 1
+            contents = ''
+            access = 1
+        else:
+            version = introduction.version + 1
+            contents = introduction.contents
+        initial = {'repository' : repository, 'version' : version, 'contents' : contents}
+        form = IntroductionForm()
+        context = {'form': form, 'repository':repository}
+
+    return render(request, 'jat/introduction_create.html', context)
+
 
 class IntroductionUpdateView(generic.UpdateView):
     model = Introduction
