@@ -1,7 +1,5 @@
 # NetworkProgramming_Jathub
 네트워크프로그래밍 수업 💾  Django_Jathub
-   🌱시대의 흐름에 따라 새겨진 옷의 나이테
-   
    🌱옷매, 옷매무새를 나타내는 한국말
 
 
